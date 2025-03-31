@@ -3,6 +3,10 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 
+use App\Http\Middleware\ClienteMiddleware;
+use App\Http\Middleware\AgenteMiddleware;
+use App\Http\Middleware\AdminMiddleware;
+
 
 Route::get('/', function () {
     return redirect()->route('login');
@@ -16,18 +20,20 @@ Route::post('/register', [AuthController::class, 'register'])->name('register');
 
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
-Route::middleware('auth')->group(function () {
+Route::middleware(['auth', ClienteMiddleware::class])->group(function () {
+    Route::get('/cliente/dashboard', fn() => view('cliente.dashboard'))->name('cliente.dashboard');
+    Route::get('/tickets', [TicketController::class, 'index'])->name('tickets.index');
+    Route::get('/tickets/create', [TicketController::class, 'create'])->name('tickets.create');
+    Route::post('/tickets', [TicketController::class, 'store'])->name('tickets.store');
+    Route::get('/tickets/{ticket}', [TicketController::class, 'show'])->name('tickets.show');
+});
 
-    Route::get('/cliente/dashboard', function () {
-        return view('cliente.dashboard');
-    })->name('cliente.dashboard');
+Route::middleware(['auth', AgenteMiddleware::class])->group(function () {
+    Route::get('/agente/dashboard', fn() => view('agente.dashboard'))->name('agente.dashboard');
+    
+});
 
-    Route::get('/admin/dashboard', function () {
-        return view('admin.dashboard');
-    })->name('admin.dashboard');
-
-    Route::get('/agente/dashboard', function () {
-        return view('agente.dashboard');
-    })->name('agente.dashboard');
-
+Route::middleware(['auth', AdminMiddleware::class])->group(function () {
+    Route::get('/admin/dashboard', fn() => view('admin.dashboard'))->name('admin.dashboard');
+    
 });

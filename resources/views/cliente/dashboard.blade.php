@@ -1,67 +1,96 @@
-<!DOCTYPE html>
-<html lang="en">
+@extends('layouts.app')
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login</title>
+@section('title', 'Dashboard Cliente')
 
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+@section('content')
+<div class="container py-4">
 
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
-
-    <style>
-        body {
-            background-color: #e5e5e5;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            font-family: 'Poppins', sans-serif;
-        }
-
-        .login-container {
-            background-color: #ffffff;
-            width: 600px;
-            padding: 60px;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            text-align: center;
-        }
-
-        .login-container img {
-            width: 300px;
-            margin-bottom: 30px;
-        }
-
-        .form-control {
-            border-radius: 20px;
-        }
-
-        .btn-login {
-            background-color: #baf266;
-            border: none;
-            border-radius: 20px;
-            padding: 10px 20px;
-            width: 100%;
-            color: black;
-        }
-
-        .register-link {
-            margin-top: 20px;
-            font-size: 0.95rem;
-        }
-    </style>
-</head>
-
-<body>
-    <div class="login-container">
-
-        <h1>Bienvenido!!</h1>
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="fw-bold">Dashboard</h2>
+        <a href="{{ route('tickets.create') }}" class="btn btn-success">
+            <i class="bi bi-plus-circle"></i> Crear nuevo ticket
+        </a>
     </div>
-</body>
 
-</html>
+    <div class="row mb-4">
+        <div class="col-md-6">
+            <div class="p-4 bg-white rounded shadow-sm border text-center">
+                <h5 class="fw-bold">Hola, {{ Auth::user()->nombre }} {{ Auth::user()->apellido }}</h5>
+                <p class="text-muted mb-3">Echa un vistazo a tus tickets 😊</p>
+                <img src="{{ asset('images/cliente-dashboard.svg') }}" alt="Usuario" class="img-fluid mb-3" style="max-height: 150px;">
+                <a href="{{ route('tickets.index') }}" class="btn btn-success">
+                    Ver tickets <i class="bi bi-arrow-right-circle-fill ms-1"></i>
+                </a>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="p-4 bg-white rounded shadow-sm border text-center">
+                <h5 class="fw-bold mb-3">Mis Tickets</h5>
+                <div class="row justify-content-center g-3">
+                    <div class="col-6 col-md-3">
+                        <i class="bi bi-list-task fs-2 text-success"></i>
+                        <div class="fw-bold fs-5">{{ $total }}</div>
+                        <small>Total</small>
+                    </div>
+                    <div class="col-6 col-md-3">
+                        <i class="bi bi-check-circle fs-2 text-success"></i>
+                        <div class="fw-bold fs-5">{{ $resueltos }}</div>
+                        <small>Resueltos</small>
+                    </div>
+                    <div class="col-6 col-md-3">
+                        <i class="bi bi-gear-wide-connected fs-2 text-success"></i>
+                        <div class="fw-bold fs-5">{{ $en_proceso }}</div>
+                        <small>En Progreso</small>
+                    </div>
+                    <div class="col-6 col-md-3">
+                        <i class="bi bi-clock-history fs-2 text-success"></i>
+                        <div class="fw-bold fs-5">{{ $en_espera }}</div>
+                        <small>En Espera</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="bg-white rounded shadow-sm border p-4">
+        <h5 class="mb-3 fw-bold">Últimos Tickets</h5>
+        <div class="table-responsive">
+            <table class="table table-hover align-middle text-center">
+                <thead class="table-light">
+                    <tr>
+                        <th>ID Ticket</th>
+                        <th>Solicitante</th>
+                        <th>Fecha</th>
+                        <th>Agente</th>
+                        <th>Área</th>
+                        <th>Estado</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @forelse ($tickets as $ticket)
+                        <tr>
+                            <td>{{ $ticket->id }}</td>
+                            <td>{{ Auth::user()->nombre }} {{ Auth::user()->apellido }}</td>
+                            <td>{{ $ticket->created_at->diffForHumans() }}</td>
+                            <td>{{ optional($ticket->agente)->nombre ?? 'Sin asignar' }}</td>
+                            <td>{{ $ticket->categoria->nombre ?? '-' }}</td>
+                            <td>
+                                <span class="badge rounded-pill bg-success text-dark">{{ $ticket->estado }}</span>
+                            </td>
+                            <td>
+                                <a href="{{ route('tickets.show', $ticket->id) }}" class="btn btn-sm btn-outline-dark rounded-circle">
+                                    <i class="bi bi-arrow-right-short fs-5"></i>
+                                </a>
+                            </td>
+                        </tr>
+                    @empty
+                        <tr><td colspan="7">No hay tickets aún.</td></tr>
+                    @endforelse
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+@endsection
