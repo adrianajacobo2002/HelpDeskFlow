@@ -16,3 +16,16 @@ body {
     font-family: 'Poppins', sans-serif;
 }
 
+.btn-lima {
+    background-color: #baf266;
+    color: black;
+    border: none;
+}
+
+.badge-lima {
+    background-color: #baf266;
+    color: #000;
+    font-weight: 500;
+}
+
+

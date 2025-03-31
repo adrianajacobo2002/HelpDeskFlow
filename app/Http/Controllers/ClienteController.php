@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Ticket;
+use App\Models\Categoria;
 
 class ClienteController extends Controller
 {
@@ -12,6 +13,9 @@ class ClienteController extends Controller
     public function dashboard()
     {
         $userId = Auth::id();
+
+        $categorias = Categoria::all();
+
 
         $tickets = Ticket::with(['agente', 'categoria'])
             ->where('id_usuario', $userId)
@@ -24,7 +28,7 @@ class ClienteController extends Controller
         $en_proceso = $tickets->where('estado', 'En proceso')->count();
         $en_espera = $tickets->where('estado', 'En Espera')->count();
 
-        return view('cliente.dashboard', compact('tickets', 'total', 'resueltos', 'en_proceso', 'en_espera'));
+        return view('cliente.dashboard', compact('tickets', 'total', 'resueltos', 'en_proceso', 'en_espera', 'categorias'));
     }
     
 }
