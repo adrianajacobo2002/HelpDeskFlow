@@ -16,8 +16,7 @@
                 <div class="p-4 bg-white rounded shadow-sm border text-center w-100">
                     <h5 class="fw-bold">Hola, {{ Auth::user()->nombre }} {{ Auth::user()->apellido }}</h5>
                     <p class="text-muted mb-3">Echa un vistazo a tus tickets 😊</p>
-                    <img src="{{ asset('images/Programming-amico.png') }}" alt="Usuario" class="img-fluid mb-3"
-                        style="max-height: 150px;">
+                    <img src="{{ asset('images/Programming-amico.png') }}" alt="Usuario" class="img-fluid mb-3" style="max-height: 150px;">
                     <br>
                     <a href="{{ route('tickets.index') }}" class="btn btn-lima">
                         Ver tickets <i class="bi bi-arrow-right-circle-fill ms-1 text-dark"></i>
@@ -62,13 +61,11 @@
         {{-- Tabla de tickets --}}
         <div class="bg-white rounded shadow-sm border p-4">
             <h5 class="mb-3 fw-bold">Tus últimos tickets</h5>
-            <h5 class="mb-3 fw-bold">Tus últimos tickets</h5>
             <div class="table-responsive">
                 <table class="table table-hover align-middle text-center">
                     <thead class="table-light">
                         <tr>
                             <th>ID Ticket</th>
-                            <th>Título</th>
                             <th>Título</th>
                             <th>Solicitante</th>
                             <th>Fecha</th>
@@ -91,7 +88,7 @@
                                     <span class="badge rounded-pill badge-lima">{{ $ticket->estado }}</span>
                                 </td>
                                 <td>
-                                    <a href="{{ route('tickets.show', $ticket->id) }}"
+                                    <a href="{{ route('tickets.show', ['ticket' => $ticket->id_ticket]) }}"
                                         class="btn btn-sm btn-lima rounded-circle">
                                         <i class="bi bi-arrow-right-short fs-5 text-dark"></i>
                                     </a>
@@ -100,15 +97,12 @@
                         @empty
                             <tr>
                                 <td colspan="8">No hay tickets aún.</td>
-                                <td colspan="8">No hay tickets aún.</td>
                             </tr>
                         @endforelse
                     </tbody>
                 </table>
             </div>
         </div>
-        
-        
     </div>
 
     <!-- Modal: Crear Ticket -->
@@ -125,7 +119,6 @@
                 <div class="modal-body">
                     <form method="POST" action="{{ route('tickets.store') }}">
                         @csrf
-
                         <div class="mb-3 text-start">
                             <label for="titulo" class="form-label">Título de Problemática</label>
                             <input type="text" class="form-control" id="titulo" name="titulo" required>
@@ -133,8 +126,7 @@
 
                         <div class="mb-3 text-start">
                             <label for="descripcion" class="form-label">Descripción</label>
-                            <textarea class="form-control" name="descripcion" rows="3" required
-                                placeholder="Describe la situación con detalle"></textarea>
+                            <textarea class="form-control" name="descripcion" rows="3" required placeholder="Describe la situación con detalle"></textarea>
                         </div>
 
                         <div class="mb-3 text-start">
