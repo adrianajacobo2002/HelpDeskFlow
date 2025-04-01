@@ -16,14 +16,35 @@ use Illuminate\Support\Facades\DB;
 class TicketController extends Controller
 {
     // Ver listado de tickets del cliente
-    public function index()
+    public function index(Request $request)
     {
-        $tickets = Ticket::with(['categoria', 'agente'])
-            ->where('id_usuario', Auth::id())
-            ->latest()
-            ->get();
+        $query = Ticket::with(['categoria', 'agente'])
+        ->where('id_usuario', Auth::id());
 
-        return view('cliente.tickets', compact('tickets'));
+        if ($request->filled('estado')) {
+            $query->where('estado', $request->estado);
+        }
+
+        if ($request->filled('prioridad')) {
+            $query->where('prioridad', $request->prioridad);
+        }
+
+        if ($request->filled('categoria_id')) {
+            $query->where('id_categoria', $request->categoria_id);
+        }
+
+        if ($request->filled('desde')) {
+            $query->whereDate('created_at', '>=', $request->desde);
+        }
+
+        if ($request->filled('hasta')) {
+            $query->whereDate('created_at', '<=', $request->hasta);
+        }
+
+        $tickets = $query->latest()->get();
+        $categorias = Categoria::all();
+
+        return view('cliente.tickets', compact('tickets', 'categorias'));
     }
 
     // Mostrar formulario para crear ticket
@@ -74,9 +95,9 @@ class TicketController extends Controller
             abort(403);
         }
 
-        $ticket->load(['categoria', 'agente', 'comentarios']);
+        $ticket->load(['categoria', 'agente', 'comentarios', 'historialEstados']);
 
-        return view('cliente.tickets.show', compact('ticket'));
+        return view('cliente.ticketdetail', compact('ticket'));
     }
     // Admin dashboard (estadísticas globales)
     public function estadisticasGlobales()
