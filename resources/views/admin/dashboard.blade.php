@@ -91,7 +91,7 @@
                                     <td>{{ $ticket->categoria_nombre ?? '-' }}</td>
                                     <td><span class="badge rounded-pill badge-lima">{{ $ticket->estado }}</span></td>
                                     <td>
-                                        <a href="{{ route('admin.tickets.show', $ticket->id_ticket) }}" class="btn btn-sm btn-lima rounded-circle">
+                                        <a href="{{ route('admin.ticketdetalle', $ticket->id_ticket) }}" class="btn btn-sm btn-lima rounded-circle">
                                             <i class="bi bi-arrow-right-short fs-5 text-dark"></i>
                                         </a>
                                     </td>

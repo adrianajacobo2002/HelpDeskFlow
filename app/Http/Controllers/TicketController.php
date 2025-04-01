@@ -196,5 +196,13 @@ class TicketController extends Controller
 
         return redirect()->back()->with('success', 'Agente asignado correctamente.');
     }
+    //ver ticket
+    public function verTicketAdmin(Ticket $ticket)
+    {
+        $ticket->load(['categoria', 'agente', 'comentarios', 'historialEstados']);
+        return view('admin.ticketdetail', compact('ticket'));
+    }
+
+
 
 }
