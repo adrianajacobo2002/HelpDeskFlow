@@ -75,25 +75,41 @@ class TicketController extends Controller
 
         return view('cliente.tickets.show', compact('ticket'));
     }
-    //Admin dashboard
+    // Admin dashboard (estadísticas globales)
     public function estadisticasGlobales()
     {
         $total = Ticket::count();
+        $abiertos = Ticket::where('estado', 'Abierto')->count();
+        $en_proceso = Ticket::where('estado', 'En proceso')->count();
         $resueltos = Ticket::where('estado', 'Resuelto')->count();
-        $en_proceso = Ticket::where('estado', 'En Progreso')->count();
-        $en_espera = Ticket::where('estado', 'En Espera')->count();
         $cerrados = Ticket::where('estado', 'Cerrado')->count();
 
-        $tickets = Ticket::with(['usuario', 'categoria'])->latest()->take(5)->get();
+        $tickets = Ticket::select(
+                'tickets.*',
+                'clientes.nombre as cliente_nombre',
+                'clientes.apellido as cliente_apellido',
+                'categorias.nombre as categoria_nombre'
+            )
+            ->leftJoin('users as clientes', 'tickets.id_usuario', '=', 'clientes.id')
+            ->leftJoin('categorias', 'tickets.id_categoria', '=', 'categorias.id_categoria')
+            ->latest()
+            ->take(5)
+            ->get();
 
         return view('admin.dashboard', compact(
             'total',
-            'resueltos',
+            'abiertos',
             'en_proceso',
-            'en_espera',
+            'resueltos',
             'cerrados',
             'tickets'
         ));
+    }
+    // Ver ticket desde vista del admin (sin restricción de dueño)
+    public function showDesdeAdmin(Ticket $ticket)
+    {
+        $ticket->load(['categoria', 'agente', 'comentarios']);
+        return view('admin.tickets.show', compact('ticket'));
     }
 
 }

@@ -31,20 +31,25 @@
                         <small>Total</small>
                     </div>
                     <div class="col-6 col-md-3 mb-3">
+                        <i class="bi bi-lightbulb fs-3 text-lima"></i>
+                        <div class="fw-bold fs-5">{{ $abiertos }}</div>
+                        <small>Abiertos</small>
+                    </div>
+                    <div class="col-6 col-md-3 mb-3">
+                        <i class="bi bi-gear-wide-connected fs-3 text-lima"></i>
+                        <div class="fw-bold fs-5">{{ $en_proceso }}</div>
+                        <small>En proceso</small>
+                    </div>
+                    <div class="col-6 col-md-3 mb-3">
                         <i class="bi bi-check-circle fs-3 text-lima"></i>
                         <div class="fw-bold fs-5">{{ $resueltos }}</div>
                         <small>Resueltos</small>
                     </div>
                     <div class="col-6 col-md-3 mb-3">
-                        <i class="bi bi-gear-wide-connected fs-3 text-lima"></i>
-                        <div class="fw-bold fs-5">{{ $en_proceso }}</div>
-                        <small>En Progreso</small>
-                    </div>
-                    <div class="col-6 col-md-3 mb-3">
-                        <i class="bi bi-clock-history fs-3 text-lima"></i>
-                        <div class="fw-bold fs-5">{{ $en_espera }}</div>
-                        <small>En Espera</small>
-                    </div>
+                        <i class="bi bi-x-circle fs-3 text-lima"></i>
+                        <div class="fw-bold fs-5">{{ $cerrados }}</div>
+                        <small>Cerrados</small>
+                    </div>                    
                 </div>
                 <div class="text-center d-none d-md-block">
                     <img src="{{ asset('images/Hand coding-bro.png') }}" alt="Estadísticas" class="img-fluid" style="max-height: 120px;">
@@ -81,12 +86,12 @@
                             @forelse ($tickets as $ticket)
                                 <tr>
                                     <td>{{ $ticket->id_ticket }}</td>
-                                    <td>{{ $ticket->usuario->nombre ?? 'N/A' }}</td>
-                                    <td>{{ $ticket->created_at->format('d/m/Y') }}</td>
-                                    <td>{{ $ticket->categoria->nombre ?? '-' }}</td>
+                                    <td>{{ $ticket->cliente_nombre }} {{ $ticket->cliente_apellido }}</td>
+                                    <td>{{ \Carbon\Carbon::parse($ticket->created_at)->format('d/m/Y') }}</td>
+                                    <td>{{ $ticket->categoria_nombre ?? '-' }}</td>
                                     <td><span class="badge rounded-pill badge-lima">{{ $ticket->estado }}</span></td>
                                     <td>
-                                        <a href="#" class="btn btn-sm btn-lima rounded-circle">
+                                        <a href="{{ route('admin.tickets.show', $ticket->id_ticket) }}" class="btn btn-sm btn-lima rounded-circle">
                                             <i class="bi bi-arrow-right-short fs-5 text-dark"></i>
                                         </a>
                                     </td>
@@ -112,9 +117,9 @@
     const ctx = document.getElementById('ticketsChart').getContext('2d');
 
     const data = [
-        {{ $resueltos }},
+        {{ $abiertos }},
         {{ $en_proceso }},
-        {{ $en_espera }},
+        {{ $resueltos }},
         {{ $cerrados }}
     ];
     const total = data.reduce((a, b) => a + b, 0);
@@ -122,11 +127,11 @@
     const ticketsChart = new Chart(ctx, {
         type: 'doughnut',
         data: {
-            labels: ['Resueltos', 'En Progreso', 'En Espera', 'Cerrados'],
+            labels: ['Abiertos', 'En proceso', 'Resueltos', 'Cerrados'],
             datasets: [{
                 label: 'Estado de Tickets',
                 data: data,
-                backgroundColor: ['#4CAF50', '#FFCE56', '#FFA500', '#F44336'],
+                backgroundColor: ['#36A2EB', '#FFCE56', '#4CAF50', '#F44336'],
                 borderColor: ['#fff'],
                 borderWidth: 2
             }]
