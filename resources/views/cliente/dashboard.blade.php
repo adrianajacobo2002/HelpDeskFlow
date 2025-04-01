@@ -61,12 +61,13 @@
 
         {{-- Tabla de tickets --}}
         <div class="bg-white rounded shadow-sm border p-4">
-            <h5 class="mb-3 fw-bold">Últimos Tickets</h5>
+            <h5 class="mb-3 fw-bold">Tus últimos tickets</h5>
             <div class="table-responsive">
                 <table class="table table-hover align-middle text-center">
                     <thead class="table-light">
                         <tr>
                             <th>ID Ticket</th>
+                            <th>Título</th>
                             <th>Solicitante</th>
                             <th>Fecha</th>
                             <th>Agente</th>
@@ -79,6 +80,7 @@
                         @forelse ($tickets as $ticket)
                             <tr>
                                 <td>{{ $ticket->id_ticket }}</td>
+                                <td>{{ $ticket->titulo }}</td>
                                 <td>{{ Auth::user()->nombre }} {{ Auth::user()->apellido }}</td>
                                 <td>{{ $ticket->created_at->format('Y-m-d H:i') }}</td>
                                 <td>{{ $ticket->agente ? $ticket->agente->nombre . ' ' . $ticket->agente->apellido : 'Sin asignar' }}
@@ -96,13 +98,14 @@
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="7">No hay tickets aún.</td>
+                                <td colspan="8">No hay tickets aún.</td>
                             </tr>
                         @endforelse
                     </tbody>
                 </table>
             </div>
         </div>
+        
     </div>
 
     <!-- Modal: Crear Ticket -->
