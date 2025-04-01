@@ -40,9 +40,6 @@ Route::middleware(['auth', AgenteMiddleware::class])->group(function () {
     Route::get('/agente/dashboard', [AgenteController::class, 'dashboard'])->name('agente.dashboard');
     Route::get('/agente/tickets', [AgenteController::class, 'misTickets'])->name('agente.tickets');
     Route::get('/agente/tickets/{ticket}', [AgenteController::class, 'show'])->name('agente.tickets.show');
-    Route::get('/agente/dashboard', [AgenteController::class, 'dashboard'])->name('agente.dashboard');
-    Route::get('/agente/tickets', [AgenteController::class, 'misTickets'])->name('agente.tickets');
-    Route::get('/agente/tickets/{ticket}', [AgenteController::class, 'show'])->name('agente.tickets.show');
     Route::post('/agente/tickets/{ticket}/estado', [AgenteController::class, 'actualizarEstado'])->name('agente.tickets.estado');
     Route::post('/agente/tickets/{ticket}/comentario', [AgenteController::class, 'comentar'])->name('agente.tickets.comentar');
 });
