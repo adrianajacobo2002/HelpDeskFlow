@@ -19,7 +19,6 @@
             <button class="btn btn-lima" data-bs-toggle="modal" data-bs-target="#crearTicketModal">
                 <i class="bi bi-plus-circle text-dark"></i> Crear nuevo ticket
             </button>
-
         </div>
 
 
@@ -185,9 +184,6 @@
         </div>
     </div>
     </div>
-    </div>
-    </div>
-
 @endsection
 
 @push('scripts')
