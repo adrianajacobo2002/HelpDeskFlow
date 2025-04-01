@@ -16,19 +16,30 @@ class ClienteController extends Controller
 
         $categorias = Categoria::all();
 
+        
+        $total = Ticket::where('id_usuario', $userId)->count();
+        $abiertos = Ticket::where('id_usuario', $userId)->where('estado', 'Abierto')->count();
+        $en_proceso = Ticket::where('id_usuario', $userId)->where('estado', 'En proceso')->count();
+        $resueltos = Ticket::where('id_usuario', $userId)->where('estado', 'Resuelto')->count();
+        $cerrados = Ticket::where('id_usuario', $userId)->where('estado', 'Cerrado')->count();
 
+        
         $tickets = Ticket::with(['agente', 'categoria'])
             ->where('id_usuario', $userId)
             ->latest()
             ->take(5)
             ->get();
 
-        $total = $tickets->count();
-        $resueltos = $tickets->where('estado', 'Resuelto')->count();
-        $en_proceso = $tickets->where('estado', 'En proceso')->count();
-        $en_espera = $tickets->where('estado', 'En Espera')->count();
-
-        return view('cliente.dashboard', compact('tickets', 'total', 'resueltos', 'en_proceso', 'en_espera', 'categorias'));
+        return view('cliente.dashboard', compact(
+            'tickets',
+            'total',
+            'abiertos',
+            'en_proceso',
+            'resueltos',
+            'cerrados',
+            'categorias'
+        ));
     }
+
     
 }

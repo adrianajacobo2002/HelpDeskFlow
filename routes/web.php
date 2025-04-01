@@ -6,6 +6,7 @@ use App\Http\Controllers\ClienteController;
 use App\Http\Controllers\TicketController;
 use App\Http\Controllers\UsuariosController;
 use App\Http\Controllers\CategoriaController;
+use App\Http\Controllers\AgenteController;
 
 use App\Http\Middleware\ClienteMiddleware;
 use App\Http\Middleware\AgenteMiddleware;
@@ -35,7 +36,9 @@ Route::middleware(['auth', ClienteMiddleware::class])->group(function () {
 });
 
 Route::middleware(['auth', AgenteMiddleware::class])->group(function () {
-    Route::get('/agente/dashboard', fn() => view('agente.dashboard'))->name('agente.dashboard');
+    Route::get('/agente/dashboard', [AgenteController::class, 'dashboard'])->name('agente.dashboard');
+    Route::get('/agente/tickets', [AgenteController::class, 'misTickets'])->name('agente.tickets');
+    Route::get('/agente/tickets/{ticket}', [AgenteController::class, 'show'])->name('agente.tickets.show');
     
 });
 
