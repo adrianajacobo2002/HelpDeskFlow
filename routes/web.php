@@ -7,6 +7,7 @@ use App\Http\Controllers\TicketController;
 use App\Http\Controllers\UsuariosController;
 use App\Http\Controllers\CategoriaController;
 use App\Http\Controllers\AgenteController;
+use App\Http\Controllers\ReporteController;
 
 use App\Http\Middleware\ClienteMiddleware;
 use App\Http\Middleware\AgenteMiddleware;
@@ -63,5 +64,8 @@ Route::middleware(['auth', AdminMiddleware::class])->group(function () {
         Route::delete('/{id}', [CategoriaController::class, 'destroy'])->name('destroy');
     });
     
+    Route::get('/admin/reportes', [ReporteController::class, 'index'])->name('admin.reportes.index');
+    Route::get('/admin/reportes/excel', [ReporteController::class, 'exportarExcel'])->name('admin.reportes.excel');
+    Route::get('/admin/reportes/pdf', [ReporteController::class, 'exportarPDF'])->name('admin.reportes.pdf');
 
 });
