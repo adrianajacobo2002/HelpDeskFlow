@@ -5,9 +5,12 @@ namespace App\Http\Controllers;
 use App\Models\Ticket;
 use App\Models\Categoria;
 use App\Models\HistorialEstado;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\DB;
+
 
 
 class TicketController extends Controller
@@ -105,11 +108,72 @@ class TicketController extends Controller
             'tickets'
         ));
     }
-    // Ver ticket desde vista del admin (sin restricción de dueño)
+    // Ver ticket desde vista del admin
     public function showDesdeAdmin(Ticket $ticket)
     {
         $ticket->load(['categoria', 'agente', 'comentarios']);
         return view('admin.tickets.show', compact('ticket'));
+    }
+    //Mostrar todos los tickets y filtro
+    public function todosLosTickets(Request $request)
+    {
+        $query = Ticket::select(
+                'tickets.*',
+                'clientes.nombre as cliente_nombre',
+                'clientes.apellido as cliente_apellido',
+                'categorias.nombre as categoria_nombre'
+            )
+            ->leftJoin('users as clientes', 'tickets.id_usuario', '=', 'clientes.id')
+            ->leftJoin('categorias', 'tickets.id_categoria', '=', 'categorias.id_categoria')
+            ->with(['agente', 'categoria']); // Para evitar consultas N+1
+
+        // Filtro por estado
+        if ($request->filled('estado')) {
+            $query->where('tickets.estado', $request->estado);
+        }
+
+        // Filtro por categoría
+        if ($request->filled('categoria_id')) {
+            $query->where('tickets.id_categoria', $request->categoria_id);
+        }
+
+        // Filtro por fecha
+        if ($request->filled('desde')) {
+            $query->whereDate('tickets.created_at', '>=', $request->desde);
+        }
+
+        if ($request->filled('hasta')) {
+            $query->whereDate('tickets.created_at', '<=', $request->hasta);
+        }
+
+        // Filtro por agente asignado
+        if ($request->filled('sin_agente') && $request->sin_agente == '1') {
+            $query->whereNull('tickets.id_agente');
+        }
+
+        $tickets = $query->orderByDesc('tickets.created_at')->paginate(10);
+
+        // Categorías para el filtro
+        $categorias = DB::table('categorias')->get();
+
+        // Agentes para el modal
+        $agentes = User::where('rol', 'agente')->get();
+
+        return view('admin.tickets', compact('tickets', 'categorias', 'agentes'));
+    }
+    //Asignar agente
+    public function asignarAgente(Request $request)
+    {
+        $request->validate([
+            'ticket_id' => 'required|exists:tickets,id_ticket',
+            'agente_id' => 'required|exists:users,id',
+        ]);
+
+        $ticket = Ticket::findOrFail($request->ticket_id);
+        $ticket->id_agente = $request->agente_id;
+        $ticket->save();
+
+        return redirect()->back()->with('success', 'Agente asignado correctamente.');
     }
 
 }

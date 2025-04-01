@@ -14,7 +14,7 @@
         <div class="collapse navbar-collapse justify-content-end" id="navbarAdmin">
             <ul class="navbar-nav">
                 <li class="nav-item">
-                    <a href="#" class="nav-link">Tickets</a>
+                    <a href="{{ route('admin.tickets.index') }}" class="nav-link">Tickets</a>
                 </li>
                 <li class="nav-item">
                     <a href="#" class="nav-link">Usuarios</a>
@@ -26,8 +26,10 @@
                     <a href="#" class="nav-link">Reportes</a> {{-- Ruta desactivada por ahora --}}
                 </li>
                 <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" id="navbarProfile" role="button" data-bs-toggle="dropdown">
-                        <img src="{{ asset('images/avatar.png') }}" alt="Avatar" class="rounded-circle me-2" height="32">
+                    <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" id="navbarProfile"
+                        role="button" data-bs-toggle="dropdown">
+                        <img src="{{ asset('images/avatar.png') }}" alt="Avatar" class="rounded-circle me-2"
+                            height="32">
                         <span>Admin</span>
                     </a>
                     <ul class="dropdown-menu dropdown-menu-end">
