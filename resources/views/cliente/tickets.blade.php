@@ -11,59 +11,61 @@
             </button>
         </div>
 
-        <form method="GET" class="row g-3 mb-4">
-            <div class="col-md-3">
-                <label for="estado" class="form-label">Estado</label>
-                <select name="estado" class="form-select">
-                    <option value="">Todos</option>
-                    <option value="Abierto" {{ request('estado') == 'Abierto' ? 'selected' : '' }}>Abierto</option>
-                    <option value="En proceso" {{ request('estado') == 'En proceso' ? 'selected' : '' }}>En proceso</option>
-                    <option value="Resuelto" {{ request('estado') == 'Resuelto' ? 'selected' : '' }}>Resuelto</option>
-                    <option value="Cerrado" {{ request('estado') == 'Cerrado' ? 'selected' : '' }}>Cerrado</option>
-                </select>
-            </div>
-
-            <div class="col-md-3">
-                <label for="prioridad" class="form-label">Prioridad</label>
-                <select name="prioridad" class="form-select">
-                    <option value="">Todas</option>
-                    <option value="Baja" {{ request('prioridad') == 'Baja' ? 'selected' : '' }}>Baja</option>
-                    <option value="Media" {{ request('prioridad') == 'Media' ? 'selected' : '' }}>Media</option>
-                    <option value="Alta" {{ request('prioridad') == 'Alta' ? 'selected' : '' }}>Alta</option>
-                    <option value="Urgente" {{ request('prioridad') == 'Urgente' ? 'selected' : '' }}>Urgente</option>
-                </select>
-            </div>
-
-            <div class="col-md-3">
-                <label for="categoria_id" class="form-label">Categoría</label>
-                <select name="categoria_id" class="form-select">
-                    <option value="">Todas</option>
-                    @foreach ($categorias as $categoria)
-                        <option value="{{ $categoria->id_categoria }}"
-                            {{ request('categoria_id') == $categoria->id_categoria ? 'selected' : '' }}>
-                            {{ $categoria->nombre }}
-                        </option>
-                    @endforeach
-                </select>
-            </div>
-
-            <div class="col-md-3">
-                <label for="desde" class="form-label">Desde</label>
-                <input type="date" name="desde" class="form-control" value="{{ request('desde') }}">
-            </div>
-
-            <div class="col-md-3">
-                <label for="hasta" class="form-label">Hasta</label>
-                <input type="date" name="hasta" class="form-control" value="{{ request('hasta') }}">
-            </div>
-
-            <div class="col-md-12 text-end">
-                <button class="btn btn-lima" type="submit">
-                    <i class="bi bi-funnel-fill"></i> Filtrar
-                </button>
+        <form method="GET" class="mb-4">
+            <div class="d-flex flex-wrap align-items-end gap-3">
+                <div>
+                    <label for="estado" class="form-label">Estado</label>
+                    <select name="estado" class="form-select">
+                        <option value="">Todos</option>
+                        <option value="Abierto" {{ request('estado') == 'Abierto' ? 'selected' : '' }}>Abierto</option>
+                        <option value="En proceso" {{ request('estado') == 'En proceso' ? 'selected' : '' }}>En proceso</option>
+                        <option value="Resuelto" {{ request('estado') == 'Resuelto' ? 'selected' : '' }}>Resuelto</option>
+                        <option value="Cerrado" {{ request('estado') == 'Cerrado' ? 'selected' : '' }}>Cerrado</option>
+                    </select>
+                </div>
+        
+                <div>
+                    <label for="prioridad" class="form-label">Prioridad</label>
+                    <select name="prioridad" class="form-select">
+                        <option value="">Todas</option>
+                        <option value="Baja" {{ request('prioridad') == 'Baja' ? 'selected' : '' }}>Baja</option>
+                        <option value="Media" {{ request('prioridad') == 'Media' ? 'selected' : '' }}>Media</option>
+                        <option value="Alta" {{ request('prioridad') == 'Alta' ? 'selected' : '' }}>Alta</option>
+                        <option value="Urgente" {{ request('prioridad') == 'Urgente' ? 'selected' : '' }}>Urgente</option>
+                    </select>
+                </div>
+        
+                <div>
+                    <label for="categoria_id" class="form-label">Categoría</label>
+                    <select name="categoria_id" class="form-select">
+                        <option value="">Todas</option>
+                        @foreach ($categorias as $categoria)
+                            <option value="{{ $categoria->id_categoria }}"
+                                {{ request('categoria_id') == $categoria->id_categoria ? 'selected' : '' }}>
+                                {{ $categoria->nombre }}
+                            </option>
+                        @endforeach
+                    </select>
+                </div>
+        
+                <div>
+                    <label for="desde" class="form-label">Desde</label>
+                    <input type="date" name="desde" class="form-control" value="{{ request('desde') }}">
+                </div>
+        
+                <div>
+                    <label for="hasta" class="form-label">Hasta</label>
+                    <input type="date" name="hasta" class="form-control" value="{{ request('hasta') }}">
+                </div>
+        
+                <div class="ms-auto">
+                    <button class="btn btn-lima" type="submit">
+                        <i class="bi bi-funnel-fill"></i> Filtrar
+                    </button>
+                </div>
             </div>
         </form>
-
+        
 
         <div class="bg-white rounded shadow-sm border p-4">
             <h5 class="mb-3 fw-bold">Lista de Tickets</h5>
