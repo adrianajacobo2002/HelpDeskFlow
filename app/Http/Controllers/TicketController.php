@@ -75,4 +75,25 @@ class TicketController extends Controller
 
         return view('cliente.tickets.show', compact('ticket'));
     }
+    //Admin dashboard
+    public function estadisticasGlobales()
+    {
+        $total = Ticket::count();
+        $resueltos = Ticket::where('estado', 'Resuelto')->count();
+        $en_proceso = Ticket::where('estado', 'En Progreso')->count();
+        $en_espera = Ticket::where('estado', 'En Espera')->count();
+        $cerrados = Ticket::where('estado', 'Cerrado')->count();
+
+        $tickets = Ticket::with(['usuario', 'categoria'])->latest()->take(5)->get();
+
+        return view('admin.dashboard', compact(
+            'total',
+            'resueltos',
+            'en_proceso',
+            'en_espera',
+            'cerrados',
+            'tickets'
+        ));
+    }
+
 }

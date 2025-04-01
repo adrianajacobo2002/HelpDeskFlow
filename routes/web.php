@@ -39,5 +39,5 @@ Route::middleware(['auth', AgenteMiddleware::class])->group(function () {
 
 Route::middleware(['auth', AdminMiddleware::class])->group(function () {
     Route::get('/admin/dashboard', fn() => view('admin.dashboard'))->name('admin.dashboard');
-    
+    Route::get('/admin/dashboard', [TicketController::class, 'estadisticasGlobales'])->name('admin.dashboard');
 });
