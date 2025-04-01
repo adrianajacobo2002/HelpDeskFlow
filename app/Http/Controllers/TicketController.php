@@ -7,6 +7,8 @@ use App\Models\Categoria;
 use App\Models\HistorialEstado;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
+
 
 class TicketController extends Controller
 {
@@ -31,11 +33,13 @@ class TicketController extends Controller
     // Guardar nuevo ticket
     public function store(Request $request)
     {
+        Log::info('Método store ejecutado', $request->all());
+
         $request->validate([
             'titulo' => 'required|string|max:255',
             'descripcion' => 'required|string',
             'prioridad' => 'required|in:Baja,Media,Alta,Urgente',
-            'categoria_id' => 'required|exists:categorias,id',
+            'categoria_id' => 'required|exists:categorias,id_categoria',
         ]);
 
         $ticket = Ticket::create([
@@ -44,7 +48,7 @@ class TicketController extends Controller
             'prioridad' => $request->prioridad,
             'estado' => 'Abierto',
             'id_usuario' => Auth::id(),
-            'categoria_id' => $request->categoria_id,
+            'id_categoria' => $request->categoria_id,
             'fecha_creacion' => now(),
         ]);
 
@@ -57,7 +61,7 @@ class TicketController extends Controller
             'fecha_cambio' => now(),
         ]);
 
-        return redirect()->route('tickets.index')->with('success', 'Ticket creado correctamente.');
+        return redirect()->route('cliente.dashboard')->with('success', '¡Ticket creado con éxito!');
     }
 
     // Ver detalles de un ticket

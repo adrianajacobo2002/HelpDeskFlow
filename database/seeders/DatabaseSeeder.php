@@ -14,6 +14,7 @@ class DatabaseSeeder extends Seeder
         // ✅ Ejecutar el seeder que creaste
         $this->call([
             UsuarioSeeder::class,
+            CategoriaSeeder::class
         ]);
     }
 }
