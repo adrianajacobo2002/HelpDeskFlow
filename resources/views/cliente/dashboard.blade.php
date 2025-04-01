@@ -62,11 +62,13 @@
         {{-- Tabla de tickets --}}
         <div class="bg-white rounded shadow-sm border p-4">
             <h5 class="mb-3 fw-bold">Tus últimos tickets</h5>
+            <h5 class="mb-3 fw-bold">Tus últimos tickets</h5>
             <div class="table-responsive">
                 <table class="table table-hover align-middle text-center">
                     <thead class="table-light">
                         <tr>
                             <th>ID Ticket</th>
+                            <th>Título</th>
                             <th>Título</th>
                             <th>Solicitante</th>
                             <th>Fecha</th>
@@ -89,7 +91,7 @@
                                     <span class="badge rounded-pill badge-lima">{{ $ticket->estado }}</span>
                                 </td>
                                 <td>
-                                    <a href="{{ route('tickets.show', ['ticket' => $ticket->id_ticket]) }}"
+                                    <a href="{{ route('tickets.show', $ticket->id) }}"
                                         class="btn btn-sm btn-lima rounded-circle">
                                         <i class="bi bi-arrow-right-short fs-5 text-dark"></i>
                                     </a>
@@ -98,12 +100,14 @@
                         @empty
                             <tr>
                                 <td colspan="8">No hay tickets aún.</td>
+                                <td colspan="8">No hay tickets aún.</td>
                             </tr>
                         @endforelse
                     </tbody>
                 </table>
             </div>
         </div>
+        
         
     </div>
 

@@ -88,9 +88,9 @@
                                     <span class="badge rounded-pill badge-lima">{{ $ticket->estado }}</span>
                                 </td>
                                 <td>
-                                    <a href="{{ route('admin.tickets.show', ['ticket' => $ticket->id_ticket]) }}"
-                                       class="btn btn-sm btn-outline-dark me-2" title="Ver detalles">
-                                        <i class="bi bi-eye"></i>
+                                    <a href="{{ route('admin.ticketdetalle', ['ticket' => $ticket->id_ticket]) }}"
+                                        class="btn btn-sm btn-outline-dark me-2" title="Ver detalles">
+                                         <i class="bi bi-eye"></i>
                                     </a>
                                     <button class="btn btn-sm btn-outline-primary" title="Asignar agente"
                                             data-bs-toggle="modal"

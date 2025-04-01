@@ -48,6 +48,7 @@ Route::middleware(['auth', AdminMiddleware::class])->group(function () {
     Route::get('/admin/dashboard', fn() => view('admin.dashboard'))->name('admin.dashboard');
     Route::get('/admin/dashboard', [TicketController::class, 'estadisticasGlobales'])->name('admin.dashboard');
     Route::get('/admin/tickets/{ticket}', [TicketController::class, 'showDesdeAdmin'])->name('admin.tickets.show');
+    Route::get('/admin/tickets/{ticket}/detalle', [TicketController::class, 'verTicketAdmin'])->name('admin.ticketdetalle');
     Route::get('/admin/tickets', [TicketController::class, 'todosLosTickets'])->name('admin.tickets.index');
     Route::post('/admin/tickets/asignar-agente', [TicketController::class, 'asignarAgente'])->name('admin.tickets.asignar-agente');
     Route::post('/admin/usuarios', [UsuariosController::class, 'store'])->name('admin.usuarios.store');
