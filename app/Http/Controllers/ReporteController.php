@@ -29,7 +29,11 @@ class ReporteController extends Controller
             return $query->whereBetween('created_at', [$inicio, $fin]);
         })->get();
 
-        $porEstado = $tickets->groupBy('estado')->map->count();
+        $estadosPosibles = ['Abierto', 'En proceso', 'Resuelto', 'Cerrado'];
+
+        $porEstado = collect($estadosPosibles)->mapWithKeys(function ($estado) use ($tickets) {
+            return [$estado => $tickets->where('estado', $estado)->count()];
+        });
         $porCategoria = $tickets->groupBy('id_categoria')->map->count();
         $categorias = Categoria::pluck('nombre', 'id_categoria');
         $porAgente = $tickets->where('estado', 'Resuelto')
@@ -43,15 +47,19 @@ class ReporteController extends Controller
 
     public function exportarExcel(Request $request)
     {
-        $porEstado = Ticket::select('estado', DB::raw('count(*) as total'))
-            ->groupBy('estado')
-            ->pluck('total', 'estado');
+        $estadosPosibles = ['Abierto', 'En proceso', 'Resuelto', 'Cerrado'];
+
+        $tickets = Ticket::all();
+
+        $porEstado = collect($estadosPosibles)->mapWithKeys(function ($estado) use ($tickets) {
+            return [$estado => $tickets->where('estado', $estado)->count()];
+        });
 
         $porCategoria = Categoria::withCount('tickets')->get()->pluck('tickets_count', 'nombre');
 
         $porAgente = User::where('rol', 'agente')
             ->withCount(['ticketsAsignados as atendidos' => function ($query) {
-                $query->whereNotNull('id_agente');
+                $query->where('estado', 'Resuelto');
             }])
             ->get()
             ->pluck('atendidos', 'nombre');
@@ -70,12 +78,15 @@ class ReporteController extends Controller
         return response($view, 200, $headers);
     }
 
-
     public function exportarPDF(Request $request)
     {
-        $porEstado = Ticket::select('estado', DB::raw('count(*) as total'))
-            ->groupBy('estado')
-            ->pluck('total', 'estado');
+        $estadosPosibles = ['Abierto', 'En proceso', 'Resuelto', 'Cerrado'];
+
+        $tickets = Ticket::all();
+
+        $porEstado = collect($estadosPosibles)->mapWithKeys(function ($estado) use ($tickets) {
+            return [$estado => $tickets->where('estado', $estado)->count()];
+        });
 
         $porCategoria = Categoria::withCount('tickets')->get()->pluck('tickets_count', 'nombre');
 
@@ -94,4 +105,5 @@ class ReporteController extends Controller
 
         return $pdf->download('reporte.pdf');
     }
+
 }
