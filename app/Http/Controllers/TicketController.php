@@ -20,7 +20,7 @@ class TicketController extends Controller
             ->latest()
             ->get();
 
-        return view('cliente.tickets.index', compact('tickets'));
+        return view('cliente.tickets', compact('tickets'));
     }
 
     // Mostrar formulario para crear ticket
