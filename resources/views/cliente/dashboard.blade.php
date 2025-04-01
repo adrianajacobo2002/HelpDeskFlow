@@ -87,16 +87,16 @@
                     <tbody>
                         @forelse ($tickets as $ticket)
                             <tr>
-                                <td>{{ $ticket->id }}</td>
+                                <td>{{ $ticket->id_ticket }}</td>
                                 <td>{{ Auth::user()->nombre }} {{ Auth::user()->apellido }}</td>
-                                <td>{{ $ticket->created_at->diffForHumans() }}</td>
+                                <td>{{ $ticket->created_at->format('Y-m-d H:i') }}</td>
                                 <td>{{ optional($ticket->agente)->nombre ?? 'Sin asignar' }}</td>
                                 <td>{{ $ticket->categoria->nombre ?? '-' }}</td>
                                 <td>
                                     <span class="badge rounded-pill badge-lima">{{ $ticket->estado }}</span>
                                 </td>
                                 <td>
-                                    <a href="{{ route('tickets.show', $ticket->id) }}"
+                                    <a href="{{ route('tickets.show', ['ticket' => $ticket->id_ticket]) }}"
                                         class="btn btn-sm btn-lima rounded-circle">
                                         <i class="bi bi-arrow-right-short fs-5 text-dark"></i>
                                     </a>
