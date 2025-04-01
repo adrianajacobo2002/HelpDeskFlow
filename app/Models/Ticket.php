@@ -48,4 +48,10 @@ class Ticket extends Model
     {
         return $this->hasMany(HistorialEstado::class, 'id_ticket');
     }
+
+    protected function serializeDate(\DateTimeInterface $date)
+    {
+        return $date->setTimezone(new \DateTimeZone('America/El_Salvador'))->format('Y-m-d H:i:s');
+    }
+
 }

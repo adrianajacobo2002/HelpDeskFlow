@@ -54,10 +54,9 @@ class TicketController extends Controller
 
         // Registrar primer historial de estado
         HistorialEstado::create([
-            'ticket_id' => $ticket->id,
+            'id_ticket' => $ticket->id_ticket,
             'usuario_id' => Auth::id(),
-            'estado_anterior' => null,
-            'estado_nuevo' => 'Abierto',
+            'estado' => 'Abierto',
             'fecha_cambio' => now(),
         ]);
 
