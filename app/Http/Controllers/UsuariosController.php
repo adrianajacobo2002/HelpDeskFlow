@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Models\Ticket;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 
@@ -90,6 +91,17 @@ class UsuariosController extends Controller
     public function destroy($id)
     {
         $usuario = User::findOrFail($id);
+
+        // Verificar si el usuario tiene tickets asignados (como cliente o agente)
+        $tieneTickets = Ticket::where('id_usuario', $usuario->id)
+                        ->orWhere('id_agente', $usuario->id)
+                        ->exists();
+
+        if ($tieneTickets) {
+            return redirect()->route('admin.usuarios.index')
+                ->with('error', 'No se puede eliminar el usuario porque tiene tickets creados.');
+        }
+
         $usuario->delete();
 
         return redirect()->route('admin.usuarios.index')->with('success', 'Usuario eliminado correctamente.');

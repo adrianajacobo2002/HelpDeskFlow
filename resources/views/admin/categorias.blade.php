@@ -141,6 +141,15 @@
                 showConfirmButton: false
             });
         @endif
+        // SweetAlert error
+        @if (session('error'))
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: '{{ session('error') }}',
+                confirmButtonColor: '#dc3545'
+            });
+        @endif
     });
 </script>
 @endpush

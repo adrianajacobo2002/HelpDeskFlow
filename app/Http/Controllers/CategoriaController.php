@@ -43,8 +43,16 @@ class CategoriaController extends Controller
     public function destroy($id)
     {
         $categoria = Categoria::findOrFail($id);
+
+        if ($categoria->tickets()->exists()) {
+            return redirect()->route('admin.categorias.index')
+                            ->with('error', 'No se puede eliminar la categoría porque tiene tickets asignados.');
+        }
+
         $categoria->delete();
 
-        return redirect()->route('admin.categorias.index')->with('success', 'Categoría eliminada correctamente.');
+        return redirect()->route('admin.categorias.index')
+                        ->with('success', 'Categoría eliminada correctamente.');
     }
+
 }
