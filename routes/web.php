@@ -2,6 +2,18 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\ClienteController;
+use App\Http\Controllers\TicketController;
+use App\Http\Controllers\UsuariosController;
+use App\Http\Controllers\CategoriaController;
+use App\Http\Controllers\AgenteController;
+use App\Http\Controllers\ReporteController;
+
+use App\Http\Middleware\ClienteMiddleware;
+use App\Http\Middleware\AgenteMiddleware;
+use App\Http\Middleware\AdminMiddleware;
+
+
 
 
 Route::get('/', function () {
@@ -16,18 +28,46 @@ Route::post('/register', [AuthController::class, 'register'])->name('register');
 
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
-Route::middleware('auth')->group(function () {
+Route::middleware(['auth', ClienteMiddleware::class])->group(function () {
+    Route::get('/cliente/dashboard', [ClienteController::class, 'dashboard'])->name('cliente.dashboard');
+    Route::get('/tickets', [TicketController::class, 'index'])->name('tickets.index');
+    Route::get('/tickets/create', [TicketController::class, 'create'])->name('tickets.create');
+    Route::post('/tickets', [TicketController::class, 'store'])->name('tickets.store');
+    Route::get('/tickets/{ticket}', [TicketController::class, 'show'])->name('tickets.show');
+});
 
-    Route::get('/cliente/dashboard', function () {
-        return view('cliente.dashboard');
-    })->name('cliente.dashboard');
+Route::middleware(['auth', AgenteMiddleware::class])->group(function () {
+    Route::get('/agente/dashboard', [AgenteController::class, 'dashboard'])->name('agente.dashboard');
+    Route::get('/agente/tickets', [AgenteController::class, 'misTickets'])->name('agente.tickets');
+    Route::get('/agente/tickets/{ticket}', [AgenteController::class, 'show'])->name('agente.tickets.show');
+    Route::post('/agente/tickets/{ticket}/estado', [AgenteController::class, 'actualizarEstado'])->name('agente.tickets.estado');
+    Route::post('/agente/tickets/{ticket}/comentario', [AgenteController::class, 'comentar'])->name('agente.tickets.comentar');
+});
 
-    Route::get('/admin/dashboard', function () {
-        return view('admin.dashboard');
-    })->name('admin.dashboard');
+Route::middleware(['auth', AdminMiddleware::class])->group(function () {
+    Route::get('/admin/dashboard', fn() => view('admin.dashboard'))->name('admin.dashboard');
+    Route::get('/admin/dashboard', [TicketController::class, 'estadisticasGlobales'])->name('admin.dashboard');
+    Route::get('/admin/tickets/{ticket}', [TicketController::class, 'showDesdeAdmin'])->name('admin.tickets.show');
+    Route::get('/admin/tickets/{ticket}/detalle', [TicketController::class, 'verTicketAdmin'])->name('admin.ticketdetalle');
+    Route::get('/admin/tickets', [TicketController::class, 'todosLosTickets'])->name('admin.tickets.index');
+    Route::post('/admin/tickets/asignar-agente', [TicketController::class, 'asignarAgente'])->name('admin.tickets.asignar-agente');
+    Route::post('/admin/usuarios', [UsuariosController::class, 'store'])->name('admin.usuarios.store');
+    Route::put('/admin/usuarios/{id}', [UsuariosController::class, 'update'])->name('admin.usuarios.update');
 
-    Route::get('/agente/dashboard', function () {
-        return view('agente.dashboard');
-    })->name('agente.dashboard');
+    Route::prefix('admin/usuarios')->name('admin.usuarios.')->group(function () {   
+        Route::get('/', [UsuariosController::class, 'index'])->name('index');
+        Route::delete('/{id}', [UsuariosController::class, 'destroy'])->name('destroy');
+    });
+    
+    Route::prefix('admin/categorias')->name('admin.categorias.')->group(function () {
+        Route::get('/', [CategoriaController::class, 'index'])->name('index');
+        Route::post('/', [CategoriaController::class, 'store'])->name('store');
+        Route::put('/{id}', [CategoriaController::class, 'update'])->name('update');
+        Route::delete('/{id}', [CategoriaController::class, 'destroy'])->name('destroy');
+    });
+    
+    Route::get('/admin/reportes', [ReporteController::class, 'index'])->name('admin.reportes.index');
+    Route::get('/admin/reportes/excel', [ReporteController::class, 'exportarExcel'])->name('admin.reportes.excel');
+    Route::get('/admin/reportes/pdf', [ReporteController::class, 'exportarPDF'])->name('admin.reportes.pdf');
 
 });

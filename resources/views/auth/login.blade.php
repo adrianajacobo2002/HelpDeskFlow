@@ -54,6 +54,16 @@
             margin-top: 20px;
             font-size: 0.95rem;
         }
+
+        .register-link a {
+            color: #198754;
+            font-weight: 500;
+            text-decoration: none;
+        }
+
+        .register-link a:hover {
+            text-decoration: underline;
+        }
     </style>
 </head>
 

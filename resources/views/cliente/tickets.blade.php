@@ -1,76 +1,84 @@
 @extends('layouts.app')
 
-@section('title', 'Dashboard Cliente')
+@section('title', 'Mis Tickets')
 
 @section('content')
     <div class="container py-4">
         <div class="d-flex justify-content-between align-items-center mb-4">
-            <h2 class="fw-bold">Dashboard</h2>
+            <h2 class="fw-bold">Mis Tickets</h2>
             <button class="btn btn-lima" data-bs-toggle="modal" data-bs-target="#crearTicketModal">
                 <i class="bi bi-plus-circle text-dark"></i> Crear nuevo ticket
             </button>
         </div>
 
-        <div class="row mb-4">
-            <div class="col-md-6 d-flex align-items-stretch">
-                <div class="p-4 bg-white rounded shadow-sm border text-center w-100">
-                    <h5 class="fw-bold">Hola, {{ Auth::user()->nombre }} {{ Auth::user()->apellido }}</h5>
-                    <p class="text-muted mb-3">Echa un vistazo a tus tickets 😊</p>
-                    <img src="{{ asset('images/Programming-amico.png') }}" alt="Usuario" class="img-fluid mb-3" style="max-height: 150px;">
-                    <br>
-                    <a href="{{ route('tickets.index') }}" class="btn btn-lima">
-                        Ver tickets <i class="bi bi-arrow-right-circle-fill ms-1 text-dark"></i>
-                    </a>
+        <form method="GET" class="mb-4">
+            <div class="d-flex flex-wrap align-items-end gap-3">
+                <div>
+                    <label for="estado" class="form-label">Estado</label>
+                    <select name="estado" class="form-select">
+                        <option value="">Todos</option>
+                        <option value="Abierto" {{ request('estado') == 'Abierto' ? 'selected' : '' }}>Abierto</option>
+                        <option value="En proceso" {{ request('estado') == 'En proceso' ? 'selected' : '' }}>En proceso</option>
+                        <option value="Resuelto" {{ request('estado') == 'Resuelto' ? 'selected' : '' }}>Resuelto</option>
+                        <option value="Cerrado" {{ request('estado') == 'Cerrado' ? 'selected' : '' }}>Cerrado</option>
+                    </select>
+                </div>
+        
+                <div>
+                    <label for="prioridad" class="form-label">Prioridad</label>
+                    <select name="prioridad" class="form-select">
+                        <option value="">Todas</option>
+                        <option value="Baja" {{ request('prioridad') == 'Baja' ? 'selected' : '' }}>Baja</option>
+                        <option value="Media" {{ request('prioridad') == 'Media' ? 'selected' : '' }}>Media</option>
+                        <option value="Alta" {{ request('prioridad') == 'Alta' ? 'selected' : '' }}>Alta</option>
+                        <option value="Urgente" {{ request('prioridad') == 'Urgente' ? 'selected' : '' }}>Urgente</option>
+                    </select>
+                </div>
+        
+                <div>
+                    <label for="categoria_id" class="form-label">Categoría</label>
+                    <select name="categoria_id" class="form-select">
+                        <option value="">Todas</option>
+                        @foreach ($categorias as $categoria)
+                            <option value="{{ $categoria->id_categoria }}"
+                                {{ request('categoria_id') == $categoria->id_categoria ? 'selected' : '' }}>
+                                {{ $categoria->nombre }}
+                            </option>
+                        @endforeach
+                    </select>
+                </div>
+        
+                <div>
+                    <label for="desde" class="form-label">Desde</label>
+                    <input type="date" name="desde" class="form-control" value="{{ request('desde') }}">
+                </div>
+        
+                <div>
+                    <label for="hasta" class="form-label">Hasta</label>
+                    <input type="date" name="hasta" class="form-control" value="{{ request('hasta') }}">
+                </div>
+        
+                <div class="ms-auto">
+                    <button class="btn btn-lima" type="submit">
+                        <i class="bi bi-funnel-fill"></i> Filtrar
+                    </button>
                 </div>
             </div>
+        </form>
+        
 
-            <div class="col-md-6 d-flex align-items-stretch">
-                <div class="p-4 bg-white rounded shadow-sm border text-center w-100">
-                    <h5 class="fw-bold mb-3">Resumen de mis Tickets</h5>
-                    <div class="row text-center">
-                        <div class="col-4 mb-4">
-                            <i class="bi bi-list-task fs-3 text-lima"></i>
-                            <div class="fw-bold fs-5">{{ $total }}</div>
-                            <small>Total</small>
-                        </div>
-                        <div class="col-4 mb-4">
-                            <i class="bi bi-door-open fs-3 text-lima"></i>
-                            <div class="fw-bold fs-5">{{ $abiertos }}</div>
-                            <small>Abiertos</small>
-                        </div>
-                        <div class="col-4 mb-4">
-                            <i class="bi bi-gear-wide-connected fs-3 text-lima"></i>
-                            <div class="fw-bold fs-5">{{ $en_proceso }}</div>
-                            <small>En Proceso</small>
-                        </div>
-                        <div class="col-4 mb-4">
-                            <i class="bi bi-check-circle fs-3 text-lima"></i>
-                            <div class="fw-bold fs-5">{{ $resueltos }}</div>
-                            <small>Resueltos</small>
-                        </div>
-                        <div class="col-4 mb-4">
-                            <i class="bi bi-x-circle fs-3 text-lima"></i>
-                            <div class="fw-bold fs-5">{{ $cerrados }}</div>
-                            <small>Cerrados</small>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        {{-- Tabla de tickets --}}
         <div class="bg-white rounded shadow-sm border p-4">
-            <h5 class="mb-3 fw-bold">Tus últimos tickets</h5>
+            <h5 class="mb-3 fw-bold">Lista de Tickets</h5>
             <div class="table-responsive">
                 <table class="table table-hover align-middle text-center">
                     <thead class="table-light">
                         <tr>
                             <th>ID Ticket</th>
                             <th>Título</th>
-                            <th>Solicitante</th>
                             <th>Fecha</th>
                             <th>Agente</th>
-                            <th>Área</th>
+                            <th>Categoría</th>
+                            <th>Prioridad</th>
                             <th>Estado</th>
                             <th></th>
                         </tr>
@@ -80,12 +88,15 @@
                             <tr>
                                 <td>{{ $ticket->id_ticket }}</td>
                                 <td>{{ $ticket->titulo }}</td>
-                                <td>{{ Auth::user()->nombre }} {{ Auth::user()->apellido }}</td>
                                 <td>{{ $ticket->created_at->format('Y-m-d H:i') }}</td>
-                                <td>{{ $ticket->agente ? $ticket->agente->nombre . ' ' . $ticket->agente->apellido : 'Sin asignar' }}</td>
+                                <td>{{ $ticket->agente ? $ticket->agente->nombre . ' ' . $ticket->agente->apellido : 'Sin asignar' }}
+                                </td>
                                 <td>{{ $ticket->categoria->nombre ?? '-' }}</td>
                                 <td>
-                                    <span class="badge rounded-pill badge-lima">{{ $ticket->estado }}</span>
+                                    <span class="badge bg-secondary">{{ $ticket->prioridad }}</span>
+                                </td>
+                                <td>
+                                    <span class="badge bg-success">{{ $ticket->estado }}</span>
                                 </td>
                                 <td>
                                     <a href="{{ route('tickets.show', ['ticket' => $ticket->id_ticket]) }}"
@@ -96,7 +107,7 @@
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="8">No hay tickets aún.</td>
+                                <td colspan="8">No hay tickets registrados.</td>
                             </tr>
                         @endforelse
                     </tbody>
@@ -111,7 +122,8 @@
             <div class="modal-content rounded-4 p-3">
                 <div class="modal-header border-0">
                     <h5 class="modal-title fw-bold" id="crearTicketLabel">
-                        <img src="{{ asset('images/helpdeskflow.png') }}" alt="Logo" style="height: 32px;"> Crear Ticket
+                        <img src="{{ asset('images/helpdeskflow.png') }}" alt="Logo" style="height: 32px;"> Crear
+                        Ticket
                     </h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
                 </div>
@@ -119,6 +131,7 @@
                 <div class="modal-body">
                     <form method="POST" action="{{ route('tickets.store') }}">
                         @csrf
+
                         <div class="mb-3 text-start">
                             <label for="titulo" class="form-label">Título de Problemática</label>
                             <input type="text" class="form-control" id="titulo" name="titulo" required>
@@ -126,7 +139,8 @@
 
                         <div class="mb-3 text-start">
                             <label for="descripcion" class="form-label">Descripción</label>
-                            <textarea class="form-control" name="descripcion" rows="3" required placeholder="Describe la situación con detalle"></textarea>
+                            <textarea class="form-control" name="descripcion" rows="3" required
+                                placeholder="Por favor describe a detalle la situación..."></textarea>
                         </div>
 
                         <div class="mb-3 text-start">
@@ -158,6 +172,8 @@
             </div>
         </div>
     </div>
+
+
 @endsection
 
 @push('scripts')
@@ -174,3 +190,4 @@
         </script>
     @endif
 @endpush
+
