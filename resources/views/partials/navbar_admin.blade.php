@@ -1,9 +1,9 @@
 <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
     <div class="container">
         {{-- Logo y título --}}
-        <a class="navbar-brand fw-bold d-flex align-items-center" href="#">
-            <img src="{{ asset('images/helpdeskflow.png') }}" alt="Logo" height="32" class="me-2">
-        </a>
+        <a class="navbar-brand fw-bold" href="{{ route('admin.dashboard') }}">
+            <img src="{{ asset('images/helpdeskflow.png') }}" alt="Logo" height="32">
+        </a>        
 
         {{-- Botón de colapso en móvil --}}
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarAdmin">
@@ -26,17 +26,15 @@
                     <a href="{{ route('admin.reportes.index') }}" class="nav-link">Reportes</a>
                 </li>
                 <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" id="navbarProfile"
-                        role="button" data-bs-toggle="dropdown">
-                        <img src="{{ asset('images/avatar.png') }}" alt="Avatar" class="rounded-circle me-2"
-                            height="32">
-                        <span>Admin</span>
+                    <a class="nav-link dropdown-toggle fw-semibold" href="#" role="button" data-bs-toggle="dropdown"
+                        aria-expanded="false">
+                        {{ Auth::user()->nombre }} {{ Auth::user()->apellido }}
                     </a>
                     <ul class="dropdown-menu dropdown-menu-end">
                         <li>
-                            <form action="{{ route('logout') }}" method="POST" class="d-inline">
+                            <form action="{{ route('logout') }}" method="POST" class="dropdown-item p-0">
                                 @csrf
-                                <button class="dropdown-item text-danger">Cerrar sesión</button>
+                                <button type="submit" class="dropdown-item text-danger">Cerrar sesión</button>
                             </form>
                         </li>
                     </ul>

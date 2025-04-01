@@ -17,11 +17,12 @@
                 <img src="{{ asset('images/Programming-amico.png') }}"
                  class="img-fluid mb-3 mx-auto d-block"
                  style="max-width: 180px; height: auto;">
-                 <a href="#"
-                 class="btn px-4 py-2 mx-auto"
-                 style="background-color: #BAF266; color: #000; border: none; text-decoration: none;">
-                 Ver Tickets <i class="bi bi-arrow-right-circle-fill ms-1 text-dark"></i>
+                 <a href="{{ route('admin.tickets.index') }}"
+                    class="btn px-4 py-2 mx-auto"
+                    style="background-color: #BAF266; color: #000; border: none; text-decoration: none;">
+                    Ver Tickets <i class="bi bi-arrow-right-circle-fill ms-1 text-dark"></i>
                 </a>
+
 
 
 

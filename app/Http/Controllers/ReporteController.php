@@ -58,11 +58,13 @@ class ReporteController extends Controller
         $porCategoria = Categoria::withCount('tickets')->get()->pluck('tickets_count', 'nombre');
 
         $porAgente = User::where('rol', 'agente')
-            ->withCount(['ticketsAsignados as atendidos' => function ($query) {
-                $query->where('estado', 'Resuelto');
-            }])
-            ->get()
-            ->pluck('atendidos', 'nombre');
+        ->withCount(['ticketsAsignados as atendidos' => function ($query) {
+            $query->where('estado', 'Resuelto');
+        }])
+        ->get()
+        ->mapWithKeys(function ($agente) {
+            return [$agente->nombre . ' ' . $agente->apellido => $agente->atendidos];
+        });
 
         $view = view('admin.reporte_excel', [
             'porEstado' => $porEstado,
@@ -91,11 +93,13 @@ class ReporteController extends Controller
         $porCategoria = Categoria::withCount('tickets')->get()->pluck('tickets_count', 'nombre');
 
         $porAgente = User::where('rol', 'agente')
-            ->withCount(['ticketsAsignados as atendidos' => function ($query) {
-                $query->where('estado', 'Resuelto');
-            }])
-            ->get()
-            ->pluck('atendidos', 'nombre');
+        ->withCount(['ticketsAsignados as atendidos' => function ($query) {
+            $query->where('estado', 'Resuelto');
+        }])
+        ->get()
+        ->mapWithKeys(function ($agente) {
+            return [$agente->nombre . ' ' . $agente->apellido => $agente->atendidos];
+        });
 
         $pdf = PDF::loadView('admin.reporte_pdf', [
             'porEstado' => $porEstado,
