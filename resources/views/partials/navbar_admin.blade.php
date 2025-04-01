@@ -23,7 +23,7 @@
                     <a href="{{ route('admin.categorias.index') }}" class="nav-link">Categorías</a>
                 </li>
                 <li class="nav-item">
-                    <a href="#" class="nav-link">Reportes</a> {{-- Ruta desactivada por ahora --}}
+                    <a href="{{ route('admin.reportes.index') }}" class="nav-link">Reportes</a>
                 </li>
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" id="navbarProfile"
