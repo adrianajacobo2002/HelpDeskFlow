@@ -131,8 +131,12 @@
 
 @push('scripts')
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
 <script>
     const ctx = document.getElementById('ticketsChart').getContext('2d');
+
+    const data = [2, 6, 2, 0]; // valores de ejemplo
+    const total = data.reduce((a, b) => a + b, 0);
 
     const ticketsChart = new Chart(ctx, {
         type: 'doughnut',
@@ -140,13 +144,8 @@
             labels: ['Resueltos', 'En Progreso', 'En Espera', 'Cerrados'],
             datasets: [{
                 label: 'Estado de Tickets',
-                data: [2, 6, 2, 0],
-                backgroundColor: [
-                    '#4CAF50',
-                    '#FFCE56',
-                    '#FFA500',
-                    '#F44336'
-                ],
+                data: data,
+                backgroundColor: ['#4CAF50', '#FFCE56', '#FFA500', '#F44336'],
                 borderColor: ['#fff'],
                 borderWidth: 2
             }]
@@ -159,6 +158,15 @@
                     labels: {
                         font: {
                             size: 14
+                        }
+                    }
+                },
+                tooltip: {
+                    callbacks: {
+                        label: function(context) {
+                            const value = context.parsed;
+                            const percentage = ((value / total) * 100).toFixed(1);
+                            return `${context.label}: ${percentage}%`;
                         }
                     }
                 }
