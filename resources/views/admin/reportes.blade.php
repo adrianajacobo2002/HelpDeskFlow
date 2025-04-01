@@ -2,7 +2,7 @@
 @section('title', 'Reportes')
 @section('content')
     <div class="container py-4">
-        <h2 class="fw-bold mb-4">📊 Reportes</h2>
+        <h2 class="fw-bold mb-4"> Reportes</h2>
 
         <form class="row mb-4" method="GET">
             <div class="col-md-3">
@@ -17,24 +17,39 @@
                 <button class="btn btn-dark w-100"><i class="bi bi-funnel-fill"></i> Filtrar</button>
             </div>
             <div class="col-md-2 d-flex align-items-end">
-                <a href="{{ route('admin.reportes.excel', request()->query()) }}" class="btn btn-success w-100"><i
-                        class="bi bi-file-earmark-excel"></i> Excel</a>
+                <a href="{{ route('admin.reportes.excel', request()->query()) }}" class="btn btn-success w-100" style="background-color: #99d68f; color: #000; border: none;" ><i
+                        class="bi bi-file-earmark-excel" ></i> Excel</a>
             </div>
             <div class="col-md-2 d-flex align-items-end">
-                <a href="{{ route('admin.reportes.pdf', request()->query()) }}" class="btn btn-danger w-100"><i
+                <a href="{{ route('admin.reportes.pdf', request()->query()) }}" class="btn btn-danger w-100" style="background-color: #baf266; color: #000; border: none;"><i
                         class="bi bi-file-earmark-pdf"></i> PDF</a>
             </div>
         </form>
 
         <div class="row">
             <div class="col-md-6 mb-4">
-                <canvas id="estadoChart"></canvas>
+                <div class="card h-100 shadow-sm p-3">
+                    <div class="card-body">
+                        <h5 class="card-title">Tickets por Estado</h5>
+                        <canvas id="estadoChart" height="240"></canvas>
+                    </div>
+                </div>
             </div>
             <div class="col-md-6 mb-4">
-                <canvas id="categoriaChart"></canvas>
+                <div class="card h-100 shadow-sm p-3">
+                    <div class="card-body">
+                        <h5 class="card-title">Tickets por Categoría</h5>
+                        <canvas id="categoriaChart" height="240"></canvas>
+                    </div>
+                </div>
             </div>
             <div class="col-md-12 mb-4">
-                <canvas id="agenteChart"></canvas>
+                <div class="card h-100 shadow-sm p-3">
+                    <div class="card-body">
+                        <h5 class="card-title">Tickets por Agente</h5>
+                        <canvas id="agenteChart" height="260"></canvas>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -65,7 +80,7 @@
                 datasets: [{
                     label: 'Tickets por Categoría',
                     data: categoriaData,
-                    backgroundColor: '#4e73df'
+                    backgroundColor: '#baf266'
                 }]
             }
         });
@@ -80,7 +95,7 @@
                 datasets: [{
                     label: 'Tickets por Agente',
                     data: agenteData,
-                    backgroundColor: '#1cc88a'
+                    backgroundColor: '#baf266'
                 }]
             }
         });

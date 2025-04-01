@@ -51,10 +51,13 @@
             </div>
 
             <div class="col-md-12 d-flex justify-content-end">
-                <button type="submit" class="btn btn-lima">
-                    <i class="bi bi-funnel-fill"></i> Filtrar
+                <button type="submit"
+                class="btn"
+                style="background-color: #BAF266; color: #000; border: none;">
+                <i class="bi bi-funnel-fill"></i> Filtrar
                 </button>
             </div>
+
         </form>
 
         {{-- Tabla --}}

@@ -11,13 +11,20 @@
     {{-- Fila superior: Bienvenida + Estadísticas --}}
     <div class="row mb-4">
         <div class="col-md-4 d-flex align-items-stretch">
-            <div class="p-4 bg-white rounded shadow-sm border text-center w-100">
+            <div class="p-4 bg-white rounded shadow-sm border text-center w-100 d-flex flex-column">
                 <h5 class="fw-bold">Hola, {{ Auth::user()->nombre }} {{ Auth::user()->apellido }}</h5>
                 <p class="text-muted mb-3">Explora el estado general de los tickets</p>
-                <img src="{{ asset('images/Programming-amico.png') }}" class="img-fluid mb-3" style="max-height: 120px;">
-                <a href="#" class="btn btn-lima">
-                    Ver Tickets <i class="bi bi-arrow-right-circle-fill ms-1 text-dark"></i>
+                <img src="{{ asset('images/Programming-amico.png') }}"
+                 class="img-fluid mb-3 mx-auto d-block"
+                 style="max-width: 180px; height: auto;">
+                 <a href="#"
+                 class="btn px-4 py-2 mx-auto"
+                 style="background-color: #BAF266; color: #000; border: none; text-decoration: none;">
+                 Ver Tickets <i class="bi bi-arrow-right-circle-fill ms-1 text-dark"></i>
                 </a>
+
+
+
             </div>
         </div>
 
@@ -51,9 +58,7 @@
                         <small>Cerrados</small>
                     </div>                    
                 </div>
-                <div class="text-center d-none d-md-block">
-                    <img src="{{ asset('images/Hand coding-bro.png') }}" alt="Estadísticas" class="img-fluid" style="max-height: 120px;">
-                </div>
+                
             </div>
         </div>
     </div>
@@ -91,9 +96,12 @@
                                     <td>{{ $ticket->categoria_nombre ?? '-' }}</td>
                                     <td><span class="badge rounded-pill badge-lima">{{ $ticket->estado }}</span></td>
                                     <td>
-                                        <a href="{{ route('admin.ticketdetalle', $ticket->id_ticket) }}" class="btn btn-sm btn-lima rounded-circle">
-                                            <i class="bi bi-arrow-right-short fs-5 text-dark"></i>
-                                        </a>
+                                    <a href="{{ route('admin.ticketdetalle', $ticket->id_ticket) }}"
+                                    class="btn btn-sm rounded-circle"
+                                    style="background-color: #BAF266; color: #000; border: none;">
+                                    <i class="bi bi-arrow-right-short fs-5 text-dark"></i>
+                                    </a>
+
                                     </td>
                                 </tr>
                             @empty

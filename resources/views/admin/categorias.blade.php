@@ -6,9 +6,12 @@
 <div class="container py-4">
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h2 class="fw-bold">Categorías</h2>
-        <button class="btn btn-lima" data-bs-toggle="modal" data-bs-target="#crearCategoriaModal">
-            <i class="bi bi-plus-circle"></i> Nueva Categoría
-        </button>
+        <button class="btn"
+        style="background-color: #BAF266; color: #000; border: none;"
+        data-bs-toggle="modal" data-bs-target="#crearCategoriaModal">
+        <i class="bi bi-plus-circle"></i> Nueva Categoría
+    </button>
+
     </div>
 
     <div class="bg-white rounded shadow-sm border p-4">
