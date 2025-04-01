@@ -68,6 +68,7 @@
                             <th>Fecha</th>
                             <th>Agente</th>
                             <th>Categoría</th>
+                            <th>Prioridad</th>
                             <th>Estado</th>
                             <th>Acciones</th>
                         </tr>
@@ -80,6 +81,9 @@
                                 <td>{{ \Carbon\Carbon::parse($ticket->created_at)->format('d/m/Y H:i') }}</td>
                                 <td>{{ $ticket->agente->nombre ?? 'Sin asignar' }}</td>
                                 <td>{{ $ticket->categoria->nombre ?? '-' }}</td>
+                                <td>
+                                    <span class="badge bg-secondary">{{ $ticket->prioridad }}</span>
+                                </td>
                                 <td>
                                     <span class="badge rounded-pill badge-lima">{{ $ticket->estado }}</span>
                                 </td>

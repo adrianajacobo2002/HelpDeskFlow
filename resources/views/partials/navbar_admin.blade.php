@@ -17,10 +17,10 @@
                     <a href="{{ route('admin.tickets.index') }}" class="nav-link">Tickets</a>
                 </li>
                 <li class="nav-item">
-                    <a href="#" class="nav-link">Usuarios</a>
+                    <a href="{{ route('admin.usuarios.index') }}" class="nav-link">Usuarios</a>
                 </li>
                 <li class="nav-item">
-                    <a href="#" class="nav-link">Categorías</a>
+                    <a href="{{ route('admin.categorias.index') }}" class="nav-link">Categorías</a>
                 </li>
                 <li class="nav-item">
                     <a href="#" class="nav-link">Reportes</a> {{-- Ruta desactivada por ahora --}}
