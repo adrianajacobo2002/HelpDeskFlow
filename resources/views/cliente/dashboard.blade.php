@@ -39,38 +39,41 @@
 
             <div class="col-md-6 d-flex align-items-stretch">
                 <div class="p-4 bg-white rounded shadow-sm border text-center w-100">
-                    <h5 class="fw-bold mb-3">Mis Tickets</h5>
+                    <h5 class="fw-bold mb-3">Resumen de mis Tickets</h5>
 
                     <div class="row align-items-center">
-                        <div class="col-md-8">
+                        <div class="col-md-12">
                             <div class="row text-center">
-                                <div class="col-6 col-sm-6 col-md-6 mb-4">
+                                <div class="col-4 col-sm-4 col-md-4 mb-4">
                                     <i class="bi bi-list-task fs-3 text-lima"></i>
                                     <div class="fw-bold fs-5">{{ $total }}</div>
                                     <small>Total</small>
                                 </div>
-                                <div class="col-6 col-sm-6 col-md-6 mb-4">
+                                <div class="col-4 col-sm-4 col-md-4 mb-4">
+                                    <i class="bi bi-door-open fs-3 text-lima"></i>
+                                    <div class="fw-bold fs-5">{{ $abiertos }}</div>
+                                    <small>Abiertos</small>
+                                </div>
+                                <div class="col-4 col-sm-4 col-md-4 mb-4">
+                                    <i class="bi bi-gear-wide-connected fs-3 text-lima"></i>
+                                    <div class="fw-bold fs-5">{{ $en_proceso }}</div>
+                                    <small>En Proceso</small>
+                                </div>
+                                <div class="col-4 col-sm-4 col-md-4 mb-4">
                                     <i class="bi bi-check-circle fs-3 text-lima"></i>
                                     <div class="fw-bold fs-5">{{ $resueltos }}</div>
                                     <small>Resueltos</small>
                                 </div>
-                                <div class="col-6 col-sm-6 col-md-6">
-                                    <i class="bi bi-gear-wide-connected fs-3 text-lima"></i>
-                                    <div class="fw-bold fs-5">{{ $en_proceso }}</div>
-                                    <small>En Progreso</small>
-                                </div>
-                                <div class="col-6 col-sm-6 col-md-6">
-                                    <i class="bi bi-clock-history fs-3 text-lima"></i>
-                                    <div class="fw-bold fs-5">{{ $en_espera }}</div>
-                                    <small>En Espera</small>
+                                <div class="col-4 col-sm-4 col-md-4 mb-4">
+                                    <i class="bi bi-x-circle fs-3 text-lima"></i>
+                                    <div class="fw-bold fs-5">{{ $cerrados }}</div>
+                                    <small>Cerrados</small>
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-4 d-none d-md-block">
-                            <img src="{{ asset('images/Hand coding-bro.png') }}" alt="Estadísticas" class="img-fluid"
-                                style="max-height: 120px;">
-                        </div>
+                        
                     </div>
+                    
                 </div>
 
             </div>
@@ -101,7 +104,7 @@
                                 <td>{{ $ticket->id_ticket }}</td>
                                 <td>{{ Auth::user()->nombre }} {{ Auth::user()->apellido }}</td>
                                 <td>{{ $ticket->created_at->format('Y-m-d H:i') }}</td>
-                                <td>{{ optional($ticket->agente)->nombre ?? 'Sin asignar' }}</td>
+                                <td>{{ $ticket->agente ? $ticket->agente->nombre . ' ' . $ticket->agente->apellido : 'Sin asignar' }}</td>
                                 <td>{{ $ticket->categoria->nombre ?? '-' }}</td>
                                 <td>
                                     <span class="badge rounded-pill badge-lima">{{ $ticket->estado }}</span>
