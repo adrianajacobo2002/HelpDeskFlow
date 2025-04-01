@@ -4,6 +4,8 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ClienteController;
 use App\Http\Controllers\TicketController;
+use App\Http\Controllers\UsuariosController;
+use App\Http\Controllers\CategoriaController;
 
 use App\Http\Middleware\ClienteMiddleware;
 use App\Http\Middleware\AgenteMiddleware;
@@ -43,6 +45,20 @@ Route::middleware(['auth', AdminMiddleware::class])->group(function () {
     Route::get('/admin/tickets/{ticket}', [TicketController::class, 'showDesdeAdmin'])->name('admin.tickets.show');
     Route::get('/admin/tickets', [TicketController::class, 'todosLosTickets'])->name('admin.tickets.index');
     Route::post('/admin/tickets/asignar-agente', [TicketController::class, 'asignarAgente'])->name('admin.tickets.asignar-agente');
+    Route::post('/admin/usuarios', [UsuariosController::class, 'store'])->name('admin.usuarios.store');
+    Route::put('/admin/usuarios/{id}', [UsuariosController::class, 'update'])->name('admin.usuarios.update');
 
+    Route::prefix('admin/usuarios')->name('admin.usuarios.')->group(function () {   
+        Route::get('/', [UsuariosController::class, 'index'])->name('index');
+        Route::delete('/{id}', [UsuariosController::class, 'destroy'])->name('destroy');
+    });
+    
+    Route::prefix('admin/categorias')->name('admin.categorias.')->group(function () {
+        Route::get('/', [CategoriaController::class, 'index'])->name('index');
+        Route::post('/', [CategoriaController::class, 'store'])->name('store');
+        Route::put('/{id}', [CategoriaController::class, 'update'])->name('update');
+        Route::delete('/{id}', [CategoriaController::class, 'destroy'])->name('destroy');
+    });
+    
 
 });
